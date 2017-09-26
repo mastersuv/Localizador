@@ -3966,6 +3966,9 @@
     <Content Include="Views\web.config" />
     <Content Include="packages.config" />
     <Content Include="Views\Shared\PlantillaPrincipalLista.cshtml" />
+    <Content Include="Views\Shared\partialHeader.cshtml" />
+    <Content Include="Views\Shared\partialNavigation.cshtml" />
+    <Content Include="Views\Shared\partialLoader.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
