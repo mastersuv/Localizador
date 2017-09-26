@@ -1,0 +1,303 @@
+﻿@using PersonasHospitalizadas.Models
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Le decimos al navegador que sea responsivo al width de la pantalla -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="@Url.Content("~/Content/assets/images/favicon.ico")">
+    <title>Localizador de Personas Hospitalizadas</title>
+    <!-- Bootstrap Core CSS -->
+    <link href="@Url.Content("~/Content/assets/plugins/bootstrap/css/bootstrap.min.css")" rel="stylesheet">
+    <!-- Select2 Personas Hospitalizadas -->
+    <link href="@Url.Content("~/Content/assets/plugins/select2/dist/css/select2.min.css")" rel="stylesheet" type="text/css" />
+    <!-- Custom CSS -->
+    <link href="@Url.Content("~/Content/css/style.css")" rel="stylesheet">
+    <!-- Tema del sitio -->
+    <link href="@Url.Content("~/Content/css/colors/blue.css")" id="theme" rel="stylesheet">
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body class="fix-header fix-sidebar card-no-border logo-center">
+    <div class="preloader">
+        <svg class="circular" viewBox="25 25 50 50">
+            <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" />
+        </svg>
+    </div>
+    <div id="main-wrapper">
+        <header class="topbar">
+            <nav class="navbar top-navbar navbar-expand-md navbar-light">
+                <p class="navbar-brand" style="padding: 0; margin: 0; color: #ffffff">
+                    <i class="flag-icon flag-icon-mx"></i> Localizador de Personas Hospitalizadas
+                </p>
+            </nav>
+        </header>
+
+        <aside class="left-sidebar">
+            <div class="scroll-sidebar">
+                <nav class="sidebar-nav">
+                    <ul id="sidebarnav">
+                        <li>
+                            <a href="@Url.Action("Index")" aria-expanded="false"><i class="mdi mdi-database"></i><span class="hide-menu">Localizador </span></a>
+                        </li>
+                        <li>
+                            <a href="#" aria-expanded="false" data-toggle="modal" data-target="#myModal"><i class="mdi mdi-account-multiple"></i><span class="hide-menu">Colaboradores </span></a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+
+        <div class="page-wrapper">
+            <div class="container-fluid">
+                <div class="row page-titles">
+                    <div class="col-md-8 col-8 align-self-center">
+                        <h3 class="text-themecolor">Sismo en México<br /><span style="font-size: 14px; font-weight:bold">Última actualización: 21 de Septiembre del 2017 9:30 PM</span></h3>
+                    </div>
+                </div>
+            
+                <div class="row">
+                        @{
+                            if (ViewBag.ListaInfoPersonaHospital != null) {
+                                int count = ((List<InfoPersonaHospital>)ViewBag.ListaInfoPersonaHospital).Count;
+                                <div class="col-md-12">
+                                    <span style="font-size: 14px; font-weight:bold; color: red">Resultados de tu búsqueda: <a style="font-size: 24px; color: red; text-decoration: underline" href="#divResultados">@count</a></span>
+                                </div>
+                            }
+                        }
+
+                    @{
+                        if(Request.Cookies["alertDismissed"] == null) {
+                            <div class="col-md-12">
+                                <div class="alert alert-info" id="alertAnuncio">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button>
+                                    <h3 class="text-info"><i class="fa fa-exclamation-circle"></i> ¿Qué es esto?</h3>Nuestra base de datos está siendo alimentada de acuerdo a las listas oficiales publicadas por <a href="http://locatel.cdmx.gob.mx/">Locatel</a>.<br /><br />Este sitio ha sido desarrollado como un esfuerzo más para ayudar a localizar personas que han sido hospitalizadas durante el sismo del día 19 de Septiembre del 2017 en la zona centro y sur de México.
+                                </div>
+                            </div>
+                        }
+                    }
+
+                    <div class="col-md-12">
+                        <div class="card card-outline-info">
+                            <div class="card-header">
+                                <h4 class="m-b-0 text-white">Información de la persona</h4>
+                            </div>
+                            <div class="card-body">
+                                <form action="@Url.Action("Index")">
+                                    <div class="form-body">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label">¿A quién buscas?</label>
+                                                    <input type="text" id="nombre" name="Nombre" class="form-control" placeholder="Nombre Completo" value="@ViewBag.Nombre">
+                                                    <small class="form-control-feedback">Si dejas el campo en blanco, consultarás todos los registros del hospital seleccionado</small>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label">¿Algún hospital en específico?</label>
+                                                    <select class="select2" name="idHospital" style="width: 100%">
+                                                        <option value="0" selected>Todos los Hospitales</option>   
+                                                        @{                                                            
+                                                            foreach(Hospital ho in ViewBag.ListaHospitales) {
+                                                                if(ViewBag.idHospital == ho.idHospital.ToString()) {
+                                                                    <option value="@ho.idHospital" selected>@ho.Nombre</option>
+                                                                } else {
+                                                                    <option value="@ho.idHospital">@ho.Nombre</option>   
+                                                                }
+                                                            }
+                                                        }
+
+                                                    </select>
+                                                    <small class="form-control-feedback">Deja seleccionado 'Todos los Hospitales' para hacer una búsqueda general</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-actions">
+                                        <button type="submit" class="btn btn-success btnBuscar"> <i class="fa fa-search"></i> Buscar en base de datos</button>
+                                        <i style="display: none" class="fa fa-spin fa-spinner spnLoader" aria-hidden="true"></i>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12" id="divResultados">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Resultados</h4>
+                                <h6 class="card-subtitle">Puedes Copiar, Imprimir o Exportar estos datos a CSV, Excel, PDF</h6>
+                                <div class="table-responsive">
+                                    <table id="tblResultados" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th>Nombre</th>
+                                                <th>Edad</th>
+                                                <th>Hospital</th>
+                                                <th>Hora de Corte</th>
+                                                <th>Fecha de Corte</th>
+                                            </tr>
+                                        </thead>
+                                        <tfoot>
+                                            <tr>
+                                                <th>Nombre</th>
+                                                <th>Edad</th>
+                                                <th>Hospital</th>
+                                                <th>Hora de Corte</th>
+                                                <th>Fecha de Corte</th>
+                                            </tr>
+                                        </tfoot>
+                                        <tbody>
+                                            @{
+                                                if (ViewBag.ListaInfoPersonaHospital != null) {
+                                                    // Si la busqueda arrojó resultados, agregarlos a la lista
+                                                    foreach (InfoPersonaHospital p in ViewBag.ListaInfoPersonaHospital) {
+                                                        <tr>
+                                                            <td>@p.Nombre</td>
+                                                            <td>@p.Edad</td>
+                                                            <td>@p.NombreHospital</td>
+                                                            <td>@p.HoraCorte</td>
+                                                            <td>@p.FechaCorte</td>
+                                                        </tr>
+                                                    }
+                                                }
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="myModalLabel">Colaboradores</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        </div>
+                        <div class="modal-body">
+                            <h4>Este proyecto ha sido posible gracias a la ayuda de:</h4>
+                            <p>Información/Listas de nombres
+                                <br />
+                                <a target="_blank" href="http://locatel.cdmx.gob.mx/">Locatel</a>
+                                <br />
+                                <a target="_blank" href="https://www.codeandomexico.org/">Codeando México</a>
+                            </p>
+
+                            <p>
+                                Desarrollo web/Captura/Base de datos
+                                <br />
+                                <a target="_blank" href="http://www.lizethgarcia.com">Lizeth García</a>
+                                <br />
+                                <a target="_blank" href="http://www.svalenzuela.com">Santiago Valenzuela</a>
+                                <br />
+                                <a href="#">Gael Balleza</a>
+                            </p>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-info waves-effect" data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="@Url.Content("~/Content/assets/plugins/jquery/jquery.min.js")"></script>
+
+    <!-- Select2, para el select de Hospitales -->
+    <script src="@Url.Content("~/Content/assets/plugins/select2/dist/js/select2.full.min.js")" type="text/javascript"></script>
+    <script>
+        $(".select2").select2();
+        $(".btnBuscar").on("click", function () {
+            $(".btnBuscar").text("Consultando... por favor espere");
+            $(".spnLoader").show(100);
+        });
+    </script>
+
+    <!-- Chat de Tawk.to Script-->
+    <script type="text/javascript">
+        var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
+        (function () {
+            var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
+            s1.async = true;
+            s1.src = 'https://embed.tawk.to/59c533ed4854b82732ff19b9/default';
+            s1.charset = 'UTF-8';
+            s1.setAttribute('crossorigin', '*');
+            s0.parentNode.insertBefore(s1, s0);
+        })();
+    </script>
+    <!--Fin de chat Tawk.to Script-->
+
+    <!-- Data Tables-->
+    <script src="@Url.Content("~/Content/assets/plugins/datatables/jquery.dataTables.min.js")"></script>
+    <script src="https://cdn.datatables.net/buttons/1.2.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.flash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+    <script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
+    <script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.print.min.js"></script>
+
+    <script>
+        $('#tblResultados').DataTable({
+            pageLength: 50,
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    extend: 'copy',
+                    text: 'Copiar',
+                },
+                'csv', 'excel', 'pdf',
+                {
+                    extend: 'print',
+                    text: 'Imprimir',
+                    message: 'Esta impresión ha sido generada usando el Localizador de Persona Hospitalizadas (http://localizador.alpacahosting.com)'
+                }
+            ],
+            "language": {
+                "lengthMenu": "Mostrar _MENU_ registros por página",
+                "zeroRecords": "No se encontraron registros",
+                "info": "Mostrando página _PAGE_ de _PAGES_.",
+                "infoEmpty": "No se encontraron registros",
+                "infoFiltered": "(filtrando de un total de _MAX_ registros)",
+                "search": "Filtrar resultados:",
+                "paginate": {
+                    "previous": "Anterior",
+                    "next": "Siguiente",
+                }
+            }
+        });
+
+        $('#alertAnuncio').on('close.bs.alert', function () {
+            document.cookie = "alertDismissed=1";
+        });
+
+    </script>
+
+    <!-- Bootstrap -->
+    <script src="@Url.Content("~/Content/assets/plugins/bootstrap/js/popper.min.js")"></script>
+    <script src="@Url.Content("~/Content/assets/plugins/bootstrap/js/bootstrap.min.js")"></script>
+    <!-- slimscrollbar scrollbar JavaScript -->
+    <script src="@Url.Content("~/Content/js/jquery.slimscroll.js")"></script>
+    <!-- stickey kit (Sticky Header) -->
+    <script src="@Url.Content("~/Content/assets/plugins/sticky-kit-master/dist/sticky-kit.min.js")"></script>
+    <script src="@Url.Content("~/Content/assets/plugins/sparkline/jquery.sparkline.min.js")"></script>
+    <script src="@Url.Content("~/Content/assets/plugins/sparkline/jquery.sparkline.min.js")"></script>
+    <!--Custom JavaScript -->
+    <script src="@Url.Content("~/Content/js/custom.min.js")"></script>
+</body>
+</html>

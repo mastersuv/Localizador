@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="PersonasHospitalizadasModelStoreContainer" CdmEntityContainer="PersonasHospitalizadasEntities">
+    <EntitySetMapping Name="Hospital">
+      <EntityTypeMapping TypeName="PersonasHospitalizadasModel.Hospital">
+        <MappingFragment StoreEntitySet="Hospital">
+          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+          <ScalarProperty Name="idHospital" ColumnName="idHospital" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Log">
+      <EntityTypeMapping TypeName="PersonasHospitalizadasModel.Log">
+        <MappingFragment StoreEntitySet="Log">
+          <ScalarProperty Name="Resultados" ColumnName="Resultados" />
+          <ScalarProperty Name="IP" ColumnName="IP" />
+          <ScalarProperty Name="Fecha" ColumnName="Fecha" />
+          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+          <ScalarProperty Name="idHospital" ColumnName="idHospital" />
+          <ScalarProperty Name="idLog" ColumnName="idLog" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Persona">
+      <EntityTypeMapping TypeName="PersonasHospitalizadasModel.Persona">
+        <MappingFragment StoreEntitySet="Persona">
+          <ScalarProperty Name="FechaCorte" ColumnName="FechaCorte" />
+          <ScalarProperty Name="HoraCorte" ColumnName="HoraCorte" />
+          <ScalarProperty Name="Edad" ColumnName="Edad" />
+          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+          <ScalarProperty Name="idHospital" ColumnName="idHospital" />
+          <ScalarProperty Name="idPersona" ColumnName="idPersona" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="InfoPersonaHospital">
+      <EntityTypeMapping TypeName="PersonasHospitalizadasModel.InfoPersonaHospital">
+        <MappingFragment StoreEntitySet="InfoPersonaHospital">
+          <ScalarProperty Name="NombreHospital" ColumnName="NombreHospital" />
+          <ScalarProperty Name="FechaCorte" ColumnName="FechaCorte" />
+          <ScalarProperty Name="HoraCorte" ColumnName="HoraCorte" />
+          <ScalarProperty Name="Edad" ColumnName="Edad" />
+          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+          <ScalarProperty Name="idHospital" ColumnName="idHospital" />
+          <ScalarProperty Name="idPersona" ColumnName="idPersona" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

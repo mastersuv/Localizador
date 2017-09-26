@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="PersonasHospitalizadasModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Hospital">
+    <Key>
+      <PropertyRef Name="idHospital" />
+    </Key>
+    <Property Name="idHospital" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Nombre" Type="varchar" MaxLength="255" />
+  </EntityType>
+  <EntityType Name="Log">
+    <Key>
+      <PropertyRef Name="idLog" />
+    </Key>
+    <Property Name="idLog" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="idHospital" Type="int" />
+    <Property Name="Nombre" Type="varchar" MaxLength="255" />
+    <Property Name="Fecha" Type="datetime" />
+    <Property Name="IP" Type="varchar" MaxLength="46" />
+    <Property Name="Resultados" Type="int" />
+  </EntityType>
+  <EntityType Name="Persona">
+    <Key>
+      <PropertyRef Name="idPersona" />
+    </Key>
+    <Property Name="idPersona" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="idHospital" Type="int" />
+    <Property Name="Nombre" Type="varchar" MaxLength="255" />
+    <Property Name="Edad" Type="int" />
+    <Property Name="HoraCorte" Type="varchar" MaxLength="255" />
+    <Property Name="FechaCorte" Type="varchar" MaxLength="255" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'PersonasHospitalizadas.dbo.InfoPersonaHospital' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="InfoPersonaHospital">
+    <Key>
+      <PropertyRef Name="idPersona" />
+    </Key>
+    <Property Name="idPersona" Type="int" Nullable="false" />
+    <Property Name="idHospital" Type="int" />
+    <Property Name="Nombre" Type="varchar" MaxLength="255" />
+    <Property Name="Edad" Type="int" />
+    <Property Name="HoraCorte" Type="varchar" MaxLength="255" />
+    <Property Name="FechaCorte" Type="varchar" MaxLength="255" />
+    <Property Name="NombreHospital" Type="varchar" MaxLength="255" />
+  </EntityType>
+  <EntityContainer Name="PersonasHospitalizadasModelStoreContainer">
+    <EntitySet Name="Hospital" EntityType="Self.Hospital" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Log" EntityType="Self.Log" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Persona" EntityType="Self.Persona" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="InfoPersonaHospital" EntityType="Self.InfoPersonaHospital" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [InfoPersonaHospital].[idPersona] AS [idPersona], 
+    [InfoPersonaHospital].[idHospital] AS [idHospital], 
+    [InfoPersonaHospital].[Nombre] AS [Nombre], 
+    [InfoPersonaHospital].[Edad] AS [Edad], 
+    [InfoPersonaHospital].[HoraCorte] AS [HoraCorte], 
+    [InfoPersonaHospital].[FechaCorte] AS [FechaCorte], 
+    [InfoPersonaHospital].[NombreHospital] AS [NombreHospital]
+    FROM [dbo].[InfoPersonaHospital] AS [InfoPersonaHospital]</DefiningQuery>
+    </EntitySet>
+  </EntityContainer>
+</Schema>
