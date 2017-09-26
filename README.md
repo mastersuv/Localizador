@@ -1,5 +1,5 @@
-# PersonasHospitalizadas
-Localizador. Proyecto de ayuda para localizar personas que han sido afectadas por el sismo en México
+# Localizador
+Proyecto de ayuda para localizar personas que han sido afectadas por el sismo en México
 
 El proyecto está desarrollado en Visual Studio 2013.
 Es un proyecto C# ASP.NET Web Application siguiendo la estructura básica MVC.
