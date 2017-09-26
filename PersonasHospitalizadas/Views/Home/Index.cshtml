@@ -10,7 +10,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <!-- Le decimos al navegador que sea responsivo al width de la pantalla -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Localizador de Personas Hospitalizadas">
+    <meta name="description" content="">
     <meta name="author" content="">
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="@Url.Content("~/Content/assets/images/favicon.ico")">
@@ -29,14 +29,34 @@
     <![endif]-->
 </head>
 <body class="fix-header fix-sidebar card-no-border logo-center">
-    
-    @Html.Partial("partialLoader")
-
+    <div class="preloader">
+        <svg class="circular" viewBox="25 25 50 50">
+            <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" />
+        </svg>
+    </div>
     <div id="main-wrapper">
-        
-        @Html.Partial("partialHeader")
+        <header class="topbar">
+            <nav class="navbar top-navbar navbar-expand-md navbar-light">
+                <p class="navbar-brand" style="padding: 0; margin: 0; color: #ffffff">
+                    <i class="flag-icon flag-icon-mx"></i> Localizador de Personas Hospitalizadas
+                </p>
+            </nav>
+        </header>
 
-        @Html.Partial("partialNavigation")
+        <aside class="left-sidebar">
+            <div class="scroll-sidebar">
+                <nav class="sidebar-nav">
+                    <ul id="sidebarnav">
+                        <li>
+                            <a href="@Url.Action("Index")" aria-expanded="false"><i class="mdi mdi-database"></i><span class="hide-menu">Localizador </span></a>
+                        </li>
+                        <li>
+                            <a href="#" aria-expanded="false" data-toggle="modal" data-target="#myModal"><i class="mdi mdi-account-multiple"></i><span class="hide-menu">Colaboradores </span></a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </aside>
 
         <div class="page-wrapper">
             <div class="container-fluid">
@@ -79,7 +99,7 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label class="control-label">¿A quién buscas?</label>
-                                                    <input type="text" id="nombre" name="Nombre" class="form-control" placeholder="Nombre o apellidos de la persona" value="@ViewBag.Nombre">
+                                                    <input type="text" id="nombre" name="Nombre" class="form-control" placeholder="Nombre Completo" value="@ViewBag.Nombre">
                                                     <small class="form-control-feedback">Si dejas el campo en blanco, consultarás todos los registros del hospital seleccionado</small>
                                                 </div>
                                             </div>
